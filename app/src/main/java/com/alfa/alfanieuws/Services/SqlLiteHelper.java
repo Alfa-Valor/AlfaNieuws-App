@@ -1,6 +1,8 @@
 package com.alfa.alfanieuws.Services;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -35,7 +37,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + NEWS_TABLE_NAME + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + NEWS_TABLE_NAME + " (" +
                 NEWS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 NEWS_COLUMN_TITLE + " TEXT" +
                 NEWS_COLUMN_IMAGE + "TEXT" +
@@ -43,7 +45,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 NEWS_COLUMN_POSTED_ON + "TEXT" +
                 NEWS_COLUMN_LAST_EDITED + "TEXT" +
                 NEWS_COLUMN_ACTIVE + "INTEGER" +")");
-        db.execSQL("CREATE TABLE " + RESPONSE_TABLE_NAME + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + RESPONSE_TABLE_NAME + " (" +
                 RESPONSE_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 NEWS_COLUMN__ID + " TEXT" +
                 RESPONSE_COLUMN_FIRST_NAME + "TEXT" +
@@ -59,5 +61,48 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + NEWS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + RESPONSE_TABLE_NAME);
         onCreate(db);
+    }
+
+    // execute a query to the database
+    // DB.execute("UPDATE " + tafel + " SET arg='argument' WHERE id =" + id);
+
+    public void execute(String query) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    // select records from the database
+    // DB.select("SELECT * FROM " + tafel + " WHERE id =" + id);
+
+    public Cursor select(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        db.close();
+        return cursor;
+    }
+
+    // insert new record to the database
+    // news = new News("title", "image", "text", 1)
+    // DB.insert(tafel, news.toContentValues());
+
+    public boolean insert(String tableName, ContentValues contentValues) {
+        if (contentValues != null) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            long rowId = db.insert(tableName, null, contentValues);
+            db.close();
+            return rowId != -1;
+        }
+        return false;
+    }
+
+    // delete with where string in query
+    // DB.delete(tafel, WHERE?);
+
+    private void delete(String tableName, String where) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + tableName + " " + where);
+        db.close();
     }
 }
