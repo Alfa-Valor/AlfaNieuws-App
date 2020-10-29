@@ -66,21 +66,36 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     // execute a query to the database
     // DB.execute("UPDATE " + tafel + " SET arg='argument' WHERE id =" + id);
 
-    public void execute(String query) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(query);
-        db.close();
+    public void executeSQL(String query) {
+        if(query != null) {
+            try {
+                SQLiteDatabase db = this.getWritableDatabase();
+                db.execSQL(query);
+                db.close();
+            } catch (Exception e) {
+                System.out.println("Something went wrong using the executeSQL functionality");
+            }
+        }
+        System.out.println("I need you to enter a query as STRING");
     }
 
     // select records from the database
     // DB.select("SELECT * FROM " + tafel + " WHERE id =" + id);
 
     public Cursor select(String query) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        db.close();
-        return cursor;
+        if (query != null) {
+            try {
+                SQLiteDatabase db = this.getReadableDatabase();
+                Cursor cursor = db.rawQuery(query, null);
+                cursor.moveToFirst();
+                db.close();
+                cursor.close();
+                return cursor;
+            } catch (Exception e) {
+                System.out.println("Something went wrong using the select SQL functionality");
+            }
+        }
+        System.out.println("I need you to enter a query as STRING");
     }
 
     // insert new record to the database
@@ -88,12 +103,19 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     // DB.insert(tafel, news.toContentValues());
 
     public boolean insert(String tableName, ContentValues contentValues) {
-        if (contentValues != null) {
-            SQLiteDatabase db = this.getWritableDatabase();
-            long rowId = db.insert(tableName, null, contentValues);
-            db.close();
-            return rowId != -1;
+        if (contentValues != null && tableName != null) {
+            try {
+                SQLiteDatabase db = this.getWritableDatabase();
+                long rowId = db.insert(tableName, null, contentValues);
+                db.close();
+                return rowId != -1;
+            } catch (Exception e) {
+                System.out.println("Something went wrong using the insert SQL functionality");
+                return false;
+            }
+
         }
+        System.out.println("I need you to enter a table name as STRING and the contentValues (insert)");
         return false;
     }
 
@@ -101,8 +123,16 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     // DB.delete(tafel, WHERE?);
 
     private void delete(String tableName, String where) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + tableName + " " + where);
-        db.close();
+        if(tableName != null && where != null){
+            try {
+                SQLiteDatabase db = this.getWritableDatabase();
+                db.execSQL("DELETE FROM " + tableName + " " + where);
+                db.close();
+            } catch (Exception e) {
+                System.out.println("Something went wrong using the delete SQL functionality");
+            }
+        }
+        System.out.println("I need you to enter a table name as STRING and the where clausule as STRING");
+
     }
 }
