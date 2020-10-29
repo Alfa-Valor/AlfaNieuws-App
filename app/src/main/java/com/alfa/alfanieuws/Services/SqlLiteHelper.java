@@ -96,6 +96,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             }
         }
         System.out.println("I need you to enter a query as STRING");
+        return null;
     }
 
     // insert new record to the database
