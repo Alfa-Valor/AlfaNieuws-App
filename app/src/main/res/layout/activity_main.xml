@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="NEWS"
+        android:text="AlfaNiews"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:background="@color/grey"
@@ -22,19 +22,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:columnCount="2"
+        android:background="@drawable/black_background"
         android:rowCount="2">
 
         <EditText
             android:id="@+id/editTextTextPersonName2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ems="10"
+            android:padding="10dp"
+            android:hint="Search"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey"
             android:layout_row="0"
             android:layout_column="0"
             android:layout_columnWeight="1"
-            android:ems="10"
+            android:background="@drawable/black_background"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:text="Search" />
 
         <Button
             android:id="@+id/button"
@@ -42,7 +50,9 @@
             android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="1"
-            android:text="Button" />
+            android:drawableRight="@drawable/ic_baseline_search_24"
+            android:paddingRight="20dp"
+            android:background="@drawable/black_background"/>
 
     </GridLayout>
 
