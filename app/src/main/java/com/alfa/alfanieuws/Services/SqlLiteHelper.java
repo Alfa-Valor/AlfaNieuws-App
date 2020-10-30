@@ -133,15 +133,4 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         System.out.println("I need you to enter a table name as STRING and the where clausule as STRING");
 
     }
-
-    public Cursor getComments() {
-        try {
-            String selectQuery = "SELECT * FROM responses order by _id desc";
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            return cursor;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
 }
