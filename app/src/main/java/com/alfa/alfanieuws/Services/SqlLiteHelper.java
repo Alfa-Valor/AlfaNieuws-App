@@ -25,9 +25,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     public static final String RESPONSE_TABLE_NAME = "responses";
     public static final String RESPONSE_COLUMN_ID = "_id";
     public static final String NEWS_COLUMN__ID = "_newsId";
-    public static final String RESPONSE_COLUMN_FIRST_NAME = "first_name";
-    public static final String RESPONSE_COLUMN_PREFIX = "prefix";
-    public static final String RESPONSE_COLUMN_LASTNAME = "lastname";
+    public static final String RESPONSE_COLUMN_NAME = "name";
     public static final String RESPONSE_COLUMN_TEXT = "text";
     public static final String RESPONSE_COLUMN_ACTIVE = "active";
 
@@ -39,20 +37,18 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + NEWS_TABLE_NAME + " (" +
                 NEWS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                NEWS_COLUMN_TITLE + " TEXT" +
-                NEWS_COLUMN_IMAGE + "TEXT" +
-                NEWS_COLUMN_TEXT + "TEXT" +
-                NEWS_COLUMN_POSTED_ON + "TEXT" +
-                NEWS_COLUMN_LAST_EDITED + "TEXT" +
-                NEWS_COLUMN_ACTIVE + "INTEGER" +")");
+                NEWS_COLUMN_TITLE + " TEXT," +
+                NEWS_COLUMN_IMAGE + " TEXT," +
+                NEWS_COLUMN_TEXT + " TEXT," +
+                NEWS_COLUMN_POSTED_ON + " TEXT," +
+                NEWS_COLUMN_LAST_EDITED + " TEXT," +
+                NEWS_COLUMN_ACTIVE + " INTEGER" +")");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + RESPONSE_TABLE_NAME + " (" +
                 RESPONSE_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                NEWS_COLUMN__ID + " TEXT" +
-                RESPONSE_COLUMN_FIRST_NAME + "TEXT" +
-                RESPONSE_COLUMN_PREFIX + "TEXT" +
-                RESPONSE_COLUMN_LASTNAME + "TEXT" +
-                RESPONSE_COLUMN_TEXT + "TEXT" +
-                RESPONSE_COLUMN_ACTIVE + "INTEGER" +")");
+                NEWS_COLUMN__ID + " TEXT," +
+                RESPONSE_COLUMN_NAME + " TEXT," +
+                RESPONSE_COLUMN_TEXT + " TEXT," +
+                RESPONSE_COLUMN_ACTIVE + " INTEGER" +")");
     }
 
 
