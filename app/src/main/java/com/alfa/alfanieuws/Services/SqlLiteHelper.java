@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class SqlLiteHelper extends SQLiteOpenHelper {
-    // Dont touch this number
-    private static final int DATABASE_VERSION = 2;
+    // Dont touch this number; meh sorry ... (Christian)
+    private static final int DATABASE_VERSION = 9;
 
     public static final String DATABASE_NAME = "alfa_nieuws";
 
@@ -62,7 +62,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     // execute a query to the database
     // DB.execute("UPDATE " + tafel + " SET arg='argument' WHERE id =" + id);
 
-    public void executeSQL(String query) {
+    public Cursor executeSQL(String query) {
         if(query != null) {
             try {
                 SQLiteDatabase db = this.getWritableDatabase();
@@ -73,6 +73,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             }
         }
         System.out.println("I need you to enter a query as STRING");
+        return null;
     }
 
     // select records from the database
@@ -131,5 +132,16 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         }
         System.out.println("I need you to enter a table name as STRING and the where clausule as STRING");
 
+    }
+
+    public Cursor getComments() {
+        try {
+            String selectQuery = "SELECT * FROM responses order by _id desc";
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            return cursor;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }
