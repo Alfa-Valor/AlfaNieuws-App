@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class SqlLiteHelper extends SQLiteOpenHelper {
-    private Context context;
-
     // Dont touch this number; meh sorry ... (Christian)
     private static final int DATABASE_VERSION = 9;
 
