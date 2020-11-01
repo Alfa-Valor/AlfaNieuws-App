@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class SqlLiteHelper extends SQLiteOpenHelper {
+    private Context context;
+
     // Dont touch this number; meh sorry ... (Christian)
     private static final int DATABASE_VERSION = 9;
 
@@ -66,8 +68,11 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         if(query != null) {
             try {
                 SQLiteDatabase db = this.getWritableDatabase();
-                db.execSQL(query);
+                Cursor cursor = db.rawQuery(query, null);
+                cursor.moveToFirst();
                 db.close();
+//                cursor.close();
+                return cursor;
             } catch (Exception e) {
                 System.out.println("Something went wrong using the executeSQL functionality");
             }
@@ -132,5 +137,27 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         }
         System.out.println("I need you to enter a table name as STRING and the where clausule as STRING");
 
+    }
+
+    //Comments
+    public void addComment(String name, String post_id, String comment){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(RESPONSE_COLUMN_NAME, name);
+        cv.put(NEWS_COLUMN__ID, post_id);
+        cv.put(RESPONSE_COLUMN_TEXT, comment);
+        long result = db.insert(RESPONSE_TABLE_NAME,null, cv);
+        if(result == -1){
+            System.out.println("Failed to add Comment");
+        }else {
+            System.out.println("Comment added");
+        }
+    }
+
+    public Cursor getAllComments(String post_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + RESPONSE_TABLE_NAME + " WHERE _newsId = " + post_id, null);
+        return res;
     }
 }
