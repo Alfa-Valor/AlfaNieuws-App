@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:padding="8dp">
+
+    <EditText
+        android:id="@+id/comment_name_box"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ic_launcher_background"
+        android:hint="Naam"
+        android:inputType="textPersonName"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingLeft="15dp" />
+
+    <EditText
+        android:id="@+id/comment_email_box"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ic_launcher_background"
+        android:hint="Emailadres"
+        android:inputType="textEmailAddress"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingLeft="15dp" />
+
+
+    <EditText
+        android:id="@+id/comment_text_box"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ic_launcher_background"
+        android:gravity="top|left"
+        android:hint="Reactie"
+        android:inputType="textMultiLine"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>
