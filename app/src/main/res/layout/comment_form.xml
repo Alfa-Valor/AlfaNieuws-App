@@ -19,18 +19,6 @@
         android:maxLines="1"
         android:paddingLeft="15dp" />
 
-    <EditText
-        android:id="@+id/comment_email_box"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/ic_launcher_background"
-        android:hint="Emailadres"
-        android:inputType="textEmailAddress"
-        android:lines="1"
-        android:maxLines="1"
-        android:paddingLeft="15dp" />
-
 
     <EditText
         android:id="@+id/comment_text_box"
