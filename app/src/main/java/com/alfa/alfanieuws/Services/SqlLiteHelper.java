@@ -69,7 +69,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 Cursor cursor = db.rawQuery(query, null);
                 cursor.moveToFirst();
                 db.close();
-//                cursor.close();
+                cursor.close();
                 return cursor;
             } catch (Exception e) {
                 System.out.println("Something went wrong using the executeSQL functionality");
