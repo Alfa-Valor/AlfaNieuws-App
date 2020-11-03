@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alfa.alfanieuws.Adapters.CommentAdapter;
+import com.alfa.alfanieuws.Helpers.CommentLoaderHelper;
 import com.alfa.alfanieuws.Helpers.InputValidatorHelper;
 import com.alfa.alfanieuws.Services.SqlLiteHelper;
 
@@ -27,7 +28,7 @@ public class CommentActivity extends AppCompatActivity {
 
     // We initialize the elements used in this activity here
     String postId = "";
-    SqlLiteHelper db;
+    CommentLoaderHelper clh;
     Context context = this;
     ListView listView;
     ArrayList<HashMap<String, String>> dataList = new ArrayList<HashMap<String, String>>();
@@ -40,7 +41,7 @@ public class CommentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comment);
 
         listView = (ListView) findViewById(R.id.listView);
-        db = new SqlLiteHelper(context);
+        clh = new CommentLoaderHelper(context);
 
         Intent intent = getIntent();
         if (intent.hasExtra("post_id")) {
@@ -57,7 +58,10 @@ public class CommentActivity extends AppCompatActivity {
     // in fetchData() we will get all the comments and put them in the dataList
 
     public void fetchData() {
-        Cursor res = db.getAllComments(postId);
+        Cursor res = clh.getAllComments(postId);
+        if (res == null) {
+            return;
+        }
         if (res.getCount() == 0) {
             Toast.makeText(context, "No comments found", Toast.LENGTH_LONG).show();
             return;
@@ -70,6 +74,7 @@ public class CommentActivity extends AppCompatActivity {
                 dataList.add(map);
             } while (res.moveToNext());
         }
+        System.out.println(dataList);
         onPostProcess();
     }
 
@@ -120,7 +125,7 @@ public class CommentActivity extends AppCompatActivity {
                         if (allowSave) {
                             //TODO API or JSON. For now SQLITE is used to add the comment.
                             //TODO ADD toast to let the user know the comment is placed..
-                            db.addComment(user_name, postId, comment);
+                            clh.addComment(user_name, postId, comment);
                             dialog.dismiss();
                             finish();
                             startActivity(getIntent());
