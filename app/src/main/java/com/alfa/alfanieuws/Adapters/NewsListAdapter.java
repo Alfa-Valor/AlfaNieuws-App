@@ -1,4 +1,4 @@
-package com.alfa.alfanieuws.ListAdapters;
+package com.alfa.alfanieuws.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -53,7 +53,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
     @Override
     public NewsListAdapter.NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate layout and return the NewsViewHolder set earlier...
-        View view = mInflater.inflate(R.layout.items, parent, false);
+        View view = mInflater.inflate(R.layout.news_items, parent, false);
         return new NewsViewHolder(view);
     }
 
