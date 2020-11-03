@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "196362867881",
+    "firebase_url": "https://alfanieuws.firebaseio.com",
+    "project_id": "alfanieuws",
+    "storage_bucket": "alfanieuws.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196362867881:android:f0b0f130fa3ab9281a45b8",
+        "android_client_info": {
+          "package_name": "com.alfa.alfanieuws"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196362867881-43nmkpmg7hmpkovls6embqdk83i67207.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDP9tMmgEmpjmXeqAslABVeLe6BsiAgJ_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196362867881-43nmkpmg7hmpkovls6embqdk83i67207.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
