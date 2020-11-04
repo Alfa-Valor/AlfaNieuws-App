@@ -88,6 +88,9 @@
         android:layout_marginRight="30dp"
         android:layout_marginBottom="50dp"
         android:onClick="iconClicked"
-        app:backgroundTint="@color/colorAccent"/>
+        android:src="@drawable/ic_baseline_edit_24"
+        app:backgroundTint="@color/blue"
+        app:borderWidth="1dp"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

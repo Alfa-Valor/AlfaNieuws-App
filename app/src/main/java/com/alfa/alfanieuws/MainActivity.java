@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // NOTE: THIS IS FOR SAMPLE DATA PURELY THIS HAS NO OTHER FUNCTIONAL USE....
         // THIS WILL BE REMOVED AFTER WE START GETTING NEWS INFO FROM THE WEB API
         // CHANGE THIS BOOLEAN TO TRUE IF YOU WANT TO ADD SOME SAMPLE DATA, MAKE SURE TO TURN IT OFF AFTER YOU HAVE LAUNCHED THE APP THEN RELOAD
-        boolean adding = false;
+        boolean adding = true;
         if(adding == true) {
             DbBitmapUtility bitmapUtility = new DbBitmapUtility();
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.logo);
