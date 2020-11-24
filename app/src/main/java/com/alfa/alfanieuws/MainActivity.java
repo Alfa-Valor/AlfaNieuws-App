@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-//import com.alfa.alfanieuws.Helpers.CustomVolleyRequest;
 import com.alfa.alfanieuws.Helpers.DbBitmapUtility;
 import com.alfa.alfanieuws.Helpers.NewsLoaderHelper;
 import com.alfa.alfanieuws.InfoConstructors.NewsInfo;
@@ -21,16 +20,17 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private NewsListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private Context context = this;
-    private NetworkImageView imageView;
-    private ImageLoader imageLoader;
     FloatingActionButton iconBtn;
 
     //the URL having the json data
@@ -54,79 +52,77 @@ public class MainActivity extends AppCompatActivity {
         // icon for the comments (Could be removed later)
         iconBtn = findViewById(R.id.iconBtn);
 
-        if (Extras.isConnected(this)) {
-            loadNewsFromDatabase();
-        } else {
-            loadNewsFromDatabase();
-            Toast.makeText(getApplicationContext(), "No internet connection, we will show offline data", Toast.LENGTH_SHORT).show();
-        }
+        // Load all the news
+        loadNews();
     }
 
-
-
-
     // Loading news from database
-    private void loadNewsFromDatabase() {
-        //initiating the utilities
-        final DbBitmapUtility bitmapUtility = new DbBitmapUtility();
+    // NOTITIE: It may take a bit to load all the new news messages because where we get the sample data from is a bit slow....
+    private void loadNews() {
         //initiating the newsloader
         final NewsLoaderHelper newsLoaderHelper = new NewsLoaderHelper(context);
         if (Extras.isConnected(context)) {
             Log.d("NEWS", "Loading news from JSON > Pushing it to the database");
 
-            // creating a string request to send the request to the url
+            // Creating a string request to send the request to the url
             StringRequest stringRequest = new StringRequest(Request.Method.GET, JSON_URL,
                     new Response.Listener<String>() {
                         @Override
-                        public void onResponse(String response) {
-                            //try catch to check if our response is indeed a JSON format document
-                            try {
-                                //getting the whole JSON object from the url
-                                JSONObject obj = new JSONObject(response);
+                        public void onResponse(final String response) {
+                            // Run a new thread for fetching all the data later, i.e. the images (Future proof also)
+                            Thread json_thread = new Thread(new Runnable() {
+                                @Override
+                                public void run(){
+                                    try { // Simple try catch
+                                        // Initiating the utilities
+                                        final DbBitmapUtility bitmapUtility = new DbBitmapUtility();
 
-                                //json is like a array, we have a array called news in there
-                                //so here we are getting that JSON array
-                                JSONArray newsArray = obj.getJSONArray("heroes");
+                                        // Getting the whole JSON object from the url
+                                        JSONObject obj = new JSONObject(response);
 
-                                //now lets loop through all the elements of the json array
-                                for (int i = 0; i < newsArray.length(); i++) {
+                                        // JSON is like a array, we have a array called news in there
+                                        // So here we are getting that JSON array
+                                        JSONArray newsArray = obj.getJSONArray("heroes");
+                                        //now lets loop through all the elements of the json array
+                                        for (int i = 0; i < newsArray.length(); i++) {
+                                            // Getting the JSON object of the particular index inside the array
+                                            JSONObject newsObject = newsArray.getJSONObject(i);
 
-                                    //getting the JSON object of the particular index inside the array
-                                    JSONObject newsObject = newsArray.getJSONObject(i);
+                                            URL imageUri = new URL(newsObject.getString("imageurl"));
+                                            Bitmap mBitmap = Picasso.get().load(String.valueOf(imageUri)).get();
+                                             byte[] byte_array = bitmapUtility.getBytes(mBitmap);
+                                             // Adding the news article to the database. (Uncomment this to get sample data)
+                                             //newsLoaderHelper.add_news_message(newsObject.getString("name"), "text", "2020/11/24", byte_array);
+                                        }
 
-                                    //getting the url image to bitmap
-                                    //getting the bytes from the image with the bitmapUtility
-
-                                    //TODO HANDLING BITMAPS FROM IMAGES
-
-                                    //adding the news article to the database.
-//                                      newsLoaderHelper.add_news_message(newsObject.getString("name"), "text", "allwaysss", photo);
-//                                    newsLoaderHelper.add_news_message(newsObject.getString("title"), newsObject.getString("text"), newsObject.getString("data"), image);
+                                    } catch (IOException | JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                                // Get all the news messages currently stored and load them....
-                                // This is based on NewsInfo objects put into one array for ease of access
-                                ArrayList<NewsInfo> newsInfoArray = newsLoaderHelper.get_news_messages();
+                            });
+                            json_thread.start();
 
-                                // Load all the news based on this array
-                                load_news(newsInfoArray);
+                            // Get all the news messages currently stored and load them....
+                            // This is based on NewsInfo objects put into one array for ease of access
+                            // We put this here because even if no new articles are added we still load the current news
+                            ArrayList<NewsInfo> newsInfoArray = newsLoaderHelper.get_news_messages();
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            // Load all the news based on this array
+                            load_news(newsInfoArray);
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            //displaying the error in toast if occur
+                            // Displaying the error in toast if occur
                             Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
 
-            //creating a request queue
+            // Creating a request queue
             RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-            //adding the string request to request queue
+            // Adding the string request to request queue
             requestQueue.add(stringRequest);
         } else {
             // Get all the news messages currently stored and load them....
@@ -135,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
 
             // Load all the news based on this array
             load_news(newsInfoArray);
+
+            // Display message
+            Toast.makeText(getApplicationContext(), "No internet connection, we will show offline data", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -154,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
     }
 
-    // JUST FOR WORKING WITH THE COMMENTS -> Quinn needs to add this to every news post in order to get the correct comments and add them correct.
+    // JUST FOR WORKING WITH THE COMMENTS -> Quinn (No you, love quinn) needs to add this to every news post in order to get the correct comments and add them correct.
     public void iconClicked(View v){
         Intent myIntent = new Intent(context, CommentActivity.class);
         myIntent.putExtra("post_id",  "1");
