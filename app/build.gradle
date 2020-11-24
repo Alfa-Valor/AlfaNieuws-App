@@ -45,5 +45,17 @@ dependencies {
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 
     //Picaso for image url
-    implementation 'com.squareup.picasso:picasso:2.5.0'
+//    implementation 'com.squareup.picasso:picasso:2.5.0'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+
+    //Volley
+    implementation 'com.android.volley:volley:1.1.1'
+
+    //GSON
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    //HTTP
+    implementation 'org.apache.httpcomponents:httpcore:4.4.10'
 }
