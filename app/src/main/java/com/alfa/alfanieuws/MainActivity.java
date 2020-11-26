@@ -16,7 +16,6 @@ import com.alfa.alfanieuws.Helpers.DbBitmapUtility;
 import com.alfa.alfanieuws.Helpers.NewsLoaderHelper;
 import com.alfa.alfanieuws.InfoConstructors.NewsInfo;
 import com.alfa.alfanieuws.Adapters.NewsListAdapter;
-import com.alfa.alfanieuws.Services.SqlLiteHelper;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private Context context = this;
     FloatingActionButton iconBtn;
-    SqlLiteHelper db;
 
     //the URL having the json data
     final static String JSON_URL = "https://simplifiedcoding.net/demos/view-flipper/heroes.php";
@@ -51,15 +49,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // CHANGE THIS BOOLEAN TO TRUE IF YOU WISH TO DROP BOTH TABLES IN ORDER TO LOAD WEB API DATA,
-        // WITHOUT PUTTING IT BACK TO FALSE THE DATABASE KEEPS DROPPING AND BUILDING AGAIN WITH NEW FRESH DATA.
-        boolean adding = false;
-        if(adding == true) {
-            db = new SqlLiteHelper(context);
-            db.deleteTable(db.NEWS_TABLE_NAME);
-            db.deleteTable(db.RESPONSE_TABLE_NAME);
-
-        }
         // icon for the comments (Could be removed later)
         iconBtn = findViewById(R.id.iconBtn);
 
@@ -103,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                             Bitmap mBitmap = Picasso.get().load(String.valueOf(imageUri)).get();
                                              byte[] byte_array = bitmapUtility.getBytes(mBitmap);
                                              // Adding the news article to the database. (Uncomment this to get sample data)
-                                             newsLoaderHelper.add_news_message(newsObject.getString("name"), "text", "2020/11/24", byte_array);
+                                             //newsLoaderHelper.add_news_message(newsObject.getString("name"), "text", "2020/11/24", byte_array);
                                         }
 
                                     } catch (IOException | JSONException e) {
