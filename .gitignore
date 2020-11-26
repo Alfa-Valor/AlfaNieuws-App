@@ -8,3 +8,4 @@ AlfaNieuws-App/
 .externalNativeBuild
 .cxx
 .gradle/
+.gradle
