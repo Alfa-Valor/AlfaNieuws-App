@@ -59,73 +59,11 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // execute a query to the database
-    // DB.execute("UPDATE " + tafel + " SET arg='argument' WHERE id =" + id);
-
-    public Cursor executeSQL(String query) {
-        if(query != null) {
+    public void deleteTable(String tableName) {
+        if(tableName != null){
             try {
                 SQLiteDatabase db = this.getWritableDatabase();
-                Cursor cursor = db.rawQuery(query, null);
-                db.close();
-                return cursor;
-            } catch (Exception e) {
-                System.out.println("Something went wrong using the executeSQL functionality");
-            }
-        }
-        System.out.println("I need you to enter a query as STRING");
-        return null;
-    }
-
-    // select records from the database
-    // DB.select("SELECT * FROM " + tafel + " WHERE id =" + id);
-
-    public Cursor select(String query) {
-        if (query != null) {
-            try {
-                SQLiteDatabase db = this.getReadableDatabase();
-                Cursor cursor = db.rawQuery(query, null);
-                cursor.moveToFirst();
-                db.close();
-                cursor.close();
-                return cursor;
-            } catch (Exception e) {
-                System.out.println("Something went wrong using the select SQL functionality");
-            }
-        }
-        System.out.println("I need you to enter a query as STRING");
-        return null;
-    }
-
-    // insert new record to the database
-    // news = new News("title", "image", "text", 1)
-    // DB.insert(tafel, news.toContentValues());
-
-    public boolean insert(String tableName, ContentValues contentValues) {
-        if (contentValues != null && tableName != null) {
-            try {
-                SQLiteDatabase db = this.getWritableDatabase();
-                long rowId = db.insert(tableName, null, contentValues);
-                db.close();
-                return rowId != -1;
-            } catch (Exception e) {
-                System.out.println("Something went wrong using the insert SQL functionality");
-                return false;
-            }
-
-        }
-        System.out.println("I need you to enter a table name as STRING and the contentValues (insert)");
-        return false;
-    }
-
-    // delete with where string in query
-    // DB.delete(tafel, WHERE?);
-
-    public void delete(String tableName, String where) {
-        if(tableName != null && where != null){
-            try {
-                SQLiteDatabase db = this.getWritableDatabase();
-                db.execSQL("DELETE FROM " + tableName + " " + where);
+                db.execSQL("DELETE FROM " + tableName);
                 db.close();
             } catch (Exception e) {
                 System.out.println("Something went wrong using the delete SQL functionality");
