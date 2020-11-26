@@ -6,5 +6,5 @@ AlfaNieuws-App/
 /build
 /captures
 .externalNativeBuild
-.gradle
+.gradle/
 .cxx
