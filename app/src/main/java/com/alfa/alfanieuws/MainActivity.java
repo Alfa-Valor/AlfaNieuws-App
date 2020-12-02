@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     SqlLiteHelper db;
 
     //the URL having the json data
-    final static String JSON_URL = "https://simplifiedcoding.net/demos/view-flipper/heroes.php";
+    final static String JSON_URL = "https://alfanieuws2.tk/articlejson";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +93,17 @@ public class MainActivity extends AppCompatActivity {
 
                                         // JSON is like a array, we have a array called news in there
                                         // So here we are getting that JSON array
-                                        JSONArray newsArray = obj.getJSONArray("heroes");
+                                        JSONArray newsArray = obj.getJSONArray("Articles");
                                         //now lets loop through all the elements of the json array
                                         for (int i = 0; i < newsArray.length(); i++) {
                                             // Getting the JSON object of the particular index inside the array
                                             JSONObject newsObject = newsArray.getJSONObject(i);
 
-                                            URL imageUri = new URL(newsObject.getString("imageurl"));
+                                            URL imageUri = new URL(newsObject.getString("image_path"));
                                             Bitmap mBitmap = Picasso.get().load(String.valueOf(imageUri)).get();
                                             byte[] byte_array = bitmapUtility.getBytes(mBitmap);
                                             // Adding the news article to the database. (Uncomment this to get sample data)
-                                            newsLoaderHelper.add_news_message(newsObject.getString("name"), "Test text, AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa", "2020/11/24", byte_array);
+                                            newsLoaderHelper.add_news_message(newsObject.getString("name"), newsObject.getString("description"), newsObject.getString("created_at"), byte_array);
                                         }
 
                                     } catch (IOException | JSONException e) {
