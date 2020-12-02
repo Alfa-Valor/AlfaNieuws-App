@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private Context context = this;
     FloatingActionButton iconBtn;
+    boolean adding = false;
     SqlLiteHelper db;
 
     //the URL having the json data
@@ -53,11 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
         // CHANGE THIS BOOLEAN TO TRUE IF YOU WISH TO DROP BOTH TABLES IN ORDER TO LOAD WEB API DATA,
         // WITHOUT PUTTING IT BACK TO FALSE THE DATABASE KEEPS DROPPING AND BUILDING AGAIN WITH NEW FRESH DATA.
-        boolean adding = false;
         if(adding == true) {
             db = new SqlLiteHelper(context);
-            db.deleteTable(db.NEWS_TABLE_NAME);
-            db.deleteTable(db.RESPONSE_TABLE_NAME);
+//            db.deleteTable(db.NEWS_TABLE_NAME);
+//            db.deleteTable(db.RESPONSE_TABLE_NAME);
 
         }
         // icon for the comments (Could be removed later)
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadNews() {
         //initiating the newsloader
         final NewsLoaderHelper newsLoaderHelper = new NewsLoaderHelper(context);
-        if (Extras.isConnected(context)) {
+        if (Extras.isConnected(context) && adding == true) {
             Log.d("NEWS", "Loading news from JSON > Pushing it to the database");
 
             // Creating a string request to send the request to the url
@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
                                             URL imageUri = new URL(newsObject.getString("imageurl"));
                                             Bitmap mBitmap = Picasso.get().load(String.valueOf(imageUri)).get();
-                                             byte[] byte_array = bitmapUtility.getBytes(mBitmap);
-                                             // Adding the news article to the database. (Uncomment this to get sample data)
-                                             newsLoaderHelper.add_news_message(newsObject.getString("name"), "text", "2020/11/24", byte_array);
+                                            byte[] byte_array = bitmapUtility.getBytes(mBitmap);
+                                            // Adding the news article to the database. (Uncomment this to get sample data)
+                                            newsLoaderHelper.add_news_message(newsObject.getString("name"), "Test text, AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa", "2020/11/24", byte_array);
                                         }
 
                                     } catch (IOException | JSONException e) {

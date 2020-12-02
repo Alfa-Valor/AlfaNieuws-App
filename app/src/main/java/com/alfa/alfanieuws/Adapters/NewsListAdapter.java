@@ -1,6 +1,7 @@
 package com.alfa.alfanieuws.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alfa.alfanieuws.Helpers.DbBitmapUtility;
 import com.alfa.alfanieuws.InfoConstructors.NewsInfo;
+import com.alfa.alfanieuws.MainActivity;
 import com.alfa.alfanieuws.R;
+import com.alfa.alfanieuws.SingleArticleActivity;
 
 import java.util.ArrayList;
 
@@ -58,17 +61,30 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final NewsViewHolder holder, int position) {
         // When the ViewHolder gets bound we set all of our texts based on our current positon and use newsInfo for ease of access
         DbBitmapUtility bitmapUtility = new DbBitmapUtility();
 
         // Set texts and use our ArrayList (mdData) to populate newsInfo based on the position in the list
-        NewsInfo newsInfo = mData.get(position);
+        final NewsInfo newsInfo = mData.get(position);
 
         // Set the information
         holder.news_title.setText(newsInfo.getNews_title());
         holder.news_date.setText(newsInfo.getNews_date());
         holder.news_image.setImageBitmap(bitmapUtility.getImage(newsInfo.getNews_picture()));
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), SingleArticleActivity.class);
+                intent.putExtra("news_id", newsInfo.getNews_id());
+                intent.putExtra("news_image", newsInfo.getNews_picture());
+                intent.putExtra("news_title", newsInfo.getNews_title());
+                intent.putExtra("news_text",  newsInfo.getNews_text());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
 

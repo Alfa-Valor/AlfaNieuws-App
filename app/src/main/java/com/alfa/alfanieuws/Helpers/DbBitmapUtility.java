@@ -2,10 +2,13 @@ package com.alfa.alfanieuws.Helpers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import java.io.ByteArrayOutputStream;
 
 public class DbBitmapUtility {
+
     /* This class pretty much just converts bytes to bitmaps and vice versa.... */
+
     // Convert from bitmap to byte array
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

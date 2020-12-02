@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
-
+    
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,18 +17,6 @@
         android:padding="10dp"
         android:textAlignment="center"
         android:gravity="center_horizontal" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/iconBtn"
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="50dp"
-        android:onClick="iconClicked"
-        app:backgroundTint="@color/colorAccent"
-        app:tint="@color/colorPrimaryDark" />
 
     <GridLayout
         android:layout_width="match_parent"
@@ -72,9 +60,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
-        android:id="@+id/recyclerView">
+        android:id="@+id/recyclerView"/>
 
-    </androidx.recyclerview.widget.RecyclerView>
+
+
+
 
 
 </LinearLayout>
