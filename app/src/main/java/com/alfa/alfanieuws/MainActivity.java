@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,38 +42,39 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private Context context = this;
     FloatingActionButton iconBtn;
-    boolean adding = false;
+//    boolean adding = true;
     SqlLiteHelper db;
 
     //the URL having the json data
-    final static String JSON_URL = "https://alfanieuws2.tk/articlejson";
+    final static String JSON_URL = "https://alfanieuws.christianletteboer.nl/articlejson";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // CHANGE THIS BOOLEAN TO TRUE IF YOU WISH TO DROP BOTH TABLES IN ORDER TO LOAD WEB API DATA,
-        // WITHOUT PUTTING IT BACK TO FALSE THE DATABASE KEEPS DROPPING AND BUILDING AGAIN WITH NEW FRESH DATA.
-        if(adding == true) {
+        // TRUNCTUATE BOTH TABLES TO ACHIEVE FRESH DATA EACH TIME IF THERE IS INTERNET
+        if(Extras.isConnected(context)) {
             db = new SqlLiteHelper(context);
-//            db.deleteTable(db.NEWS_TABLE_NAME);
-//            db.deleteTable(db.RESPONSE_TABLE_NAME);
-
+            db.trunctuateTable(db.NEWS_TABLE_NAME);
+            db.trunctuateTable(db.RESPONSE_TABLE_NAME);
         }
         // icon for the comments (Could be removed later)
         iconBtn = findViewById(R.id.iconBtn);
 
         // Load all the news
-        loadNews();
+        fetch_news();
     }
 
     // Loading news from database
     // NOTITIE: It may take a bit to load all the new news messages because where we get the sample data from is a bit slow....
-    private void loadNews() {
+    private void fetch_news() {
         //initiating the newsloader
         final NewsLoaderHelper newsLoaderHelper = new NewsLoaderHelper(context);
-        if (Extras.isConnected(context) && adding == true) {
+
+        // Reinitialize database
+        SqlLiteHelper database = new SqlLiteHelper(context);
+        if (Extras.isConnected(context)) {
             Log.d("NEWS", "Loading news from JSON > Pushing it to the database");
 
             // Creating a string request to send the request to the url
@@ -80,12 +82,14 @@ public class MainActivity extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(final String response) {
+
                             // Run a new thread for fetching all the data later, i.e. the images (Future proof also)
                             Thread json_thread = new Thread(new Runnable() {
                                 @Override
                                 public void run(){
                                     try { // Simple try catch
                                         // Initiating the utilities
+                                        Log.v("NEWS", "OPEN THREAD");
                                         final DbBitmapUtility bitmapUtility = new DbBitmapUtility();
 
                                         // Getting the whole JSON object from the url
@@ -105,21 +109,20 @@ public class MainActivity extends AppCompatActivity {
                                             // Adding the news article to the database. (Uncomment this to get sample data)
                                             newsLoaderHelper.add_news_message(newsObject.getString("name"), newsObject.getString("description"), newsObject.getString("created_at"), byte_array);
                                         }
-
+                                        // We run it inside this thread on the UI because you cant access the main from here
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                // Stuff that updates the UI
+                                                fetch_news_list();
+                                            }
+                                        });
                                     } catch (IOException | JSONException e) {
                                         e.printStackTrace();
                                     }
                                 }
                             });
                             json_thread.start();
-
-                            // Get all the news messages currently stored and load them....
-                            // This is based on NewsInfo objects put into one array for ease of access
-                            // We put this here because even if no new articles are added we still load the current news
-                            ArrayList<NewsInfo> newsInfoArray = newsLoaderHelper.get_news_messages();
-
-                            // Load all the news based on this array
-                            load_news(newsInfoArray);
                         }
                     },
                     new Response.ErrorListener() {
@@ -136,16 +139,22 @@ public class MainActivity extends AppCompatActivity {
             // Adding the string request to request queue
             requestQueue.add(stringRequest);
         } else {
-            // Get all the news messages currently stored and load them....
-            // This is based on NewsInfo objects put into one array for ease of access
-            ArrayList<NewsInfo> newsInfoArray = newsLoaderHelper.get_news_messages();
-
-            // Load all the news based on this array
-            load_news(newsInfoArray);
-
+            fetch_news_list();
             // Display message
             Toast.makeText(getApplicationContext(), "No internet connection, we will show offline data", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void fetch_news_list() {
+
+        NewsLoaderHelper newsLoaderHelper = new NewsLoaderHelper(context);
+
+        // Get all the news messages currently stored and load them....
+        // This is based on NewsInfo objects put into one array for ease of access
+        // We put this here because even if no new articles are added we still load the current news
+        ArrayList<NewsInfo> newsInfoArray = newsLoaderHelper.get_news_messages();
+        // Load all the news based on this array
+        load_news(newsInfoArray);
     }
 
     // Loads all the news given

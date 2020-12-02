@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import com.alfa.alfanieuws.InfoConstructors.NewsInfo;
 import com.alfa.alfanieuws.Services.SqlLiteHelper;
 
@@ -27,7 +29,6 @@ public class NewsLoaderHelper extends SqlLiteHelper {
         cv.put(this.NEWS_COLUMN_TEXT, newsText);
         cv.put(this.NEWS_COLUMN_POSTED_ON, date);
         cv.put(this.NEWS_COLUMN_IMAGE, image);
-
         // Insert the data into the news_table
         db.insert(this.NEWS_TABLE_NAME, null, cv);
     }
