@@ -99,7 +99,8 @@ public class News extends AppCompatActivity {
                                     image_thread.start();
                                     image_thread.join();
 
-                                    byte[] byte_array = bitmapUtility.getBytes(mBitmap[0]);
+                                    Bitmap resized = Bitmap.createScaledBitmap(mBitmap[0], 500, 600, true);
+                                    byte[] byte_array = bitmapUtility.getBytes(resized);
                                     // Adding the news article to the database. (Uncomment this to get sample data)
                                     Log.v("NEWS", String.valueOf(newsObject));
                                     newsLoaderHelper.add_news_message(newsObject.getString("name"), newsObject.getString("description"), newsObject.getString("created_at"), byte_array);

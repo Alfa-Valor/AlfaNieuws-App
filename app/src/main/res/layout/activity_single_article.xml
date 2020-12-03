@@ -38,7 +38,8 @@
                     android:id="@+id/single_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/holo_red_dark" />
+                    android:background="@android:color/holo_red_dark"
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/single_title"
