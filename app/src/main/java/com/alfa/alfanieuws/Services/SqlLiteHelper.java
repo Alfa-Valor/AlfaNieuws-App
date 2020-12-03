@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class SqlLiteHelper extends SQLiteOpenHelper {
     // Dont touch this number; meh sorry ... (Christian)
@@ -36,7 +35,6 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.v("NEWS", "HERE");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + NEWS_TABLE_NAME + " (" +
                 NEWS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 NEWS_COLUMN_TITLE + " TEXT," +
@@ -150,18 +148,4 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         System.out.println("I need you to enter a table name as STRING and the where clausule as STRING");
 
     }
-
-    public void deleteTable(String tableName) {
-        if(tableName != null){
-            try {
-                SQLiteDatabase db = this.getWritableDatabase();
-                db.execSQL("DROP TABLE IF EXISTS " + tableName);
-                db.close();
-            } catch (Exception e) {
-                System.out.println("Something went wrong using the delete SQL functionality");
-            }
-        }
-        System.out.println("I need you to enter a table name as STRING and the where clausule as STRING");
-    }
-
 }
