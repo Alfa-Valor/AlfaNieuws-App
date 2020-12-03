@@ -11,7 +11,7 @@ import com.alfa.alfanieuws.Services.SqlLiteHelper;
 import java.util.ArrayList;
 
 public class NewsLoaderHelper extends SqlLiteHelper {
-
+    public Context context;
 
     public NewsLoaderHelper(Context context) {
         super(context);

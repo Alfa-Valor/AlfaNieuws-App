@@ -18,8 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alfa.alfanieuws.Adapters.CommentAdapter;
 import com.alfa.alfanieuws.Helpers.CommentLoaderHelper;
 import com.alfa.alfanieuws.Helpers.InputValidatorHelper;
-import com.alfa.alfanieuws.Services.SqlLiteHelper;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;

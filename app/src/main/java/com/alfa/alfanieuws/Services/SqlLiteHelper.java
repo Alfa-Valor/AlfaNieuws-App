@@ -135,7 +135,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     }
 
-    public void trunctuateTable(String tableName) {
+    public void truncateTable(String tableName) {
         if(tableName != null){
             try {
                 SQLiteDatabase db = this.getWritableDatabase();
